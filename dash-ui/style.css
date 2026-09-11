@@ -1,0 +1,159 @@
+:root {
+  --bg: #f8f6f1;
+  --surface: #efeae0;
+  --surface-hover: #e7ded0;
+  --border: #ddd2ba;
+  --text: #2a2017;
+  --text-muted: #7d6e58;
+  --gold: #a1731c;
+  --gold-dim: #b89a68;
+  --teal: #3f6b5f;
+  --teal-bright: #2f5349;
+  --danger: #a13c3c;
+  --danger-bg: rgba(161, 60, 60, 0.1);
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0; min-height: 100%;
+  background: var(--bg); color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.dash { max-width: 720px; margin: 0 auto; padding: 40px 20px 80px; }
+
+.dash__header { margin-bottom: 32px; }
+.dash__title {
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+  font-size: 28px; line-height: 1.2; margin: 0 0 4px;
+}
+.dash__subtitle { margin: 0; font-size: 13px; color: var(--text-muted); }
+
+/* ── Now Playing Card ────────────────────────────────────────────────────── */
+
+.now-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 16px 20px; margin-bottom: 24px;
+  display: flex; align-items: center; gap: 16px;
+}
+.now-card.is-active { border-color: var(--teal); }
+.now-card__cover {
+  width: 52px; height: 52px; border-radius: 8px; overflow: hidden;
+  background: var(--bg); flex-shrink: 0;
+}
+.now-card__cover img { width: 100%; height: 100%; object-fit: cover; }
+.now-card__body { flex: 1; min-width: 0; }
+.now-card__label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
+  color: var(--text-muted); margin: 0 0 4px;
+}
+.now-card__title {
+  font-family: Georgia, serif; font-size: 17px; margin: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.now-card__artist { margin: 2px 0 0; font-size: 12.5px; color: var(--text-muted); }
+.now-card__empty { color: var(--text-muted); font-size: 14px; }
+
+/* ── Controls ────────────────────────────────────────────────────────────── */
+
+.controls { display: flex; gap: 8px; margin-bottom: 24px; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 8px; font-family: inherit;
+  font-size: 13px; font-weight: 500; cursor: pointer;
+  border: 1.5px solid var(--border); background: var(--surface);
+  color: var(--text); transition: all .15s;
+}
+.btn:hover { background: var(--surface-hover); border-color: var(--gold-dim); }
+.btn:active { transform: scale(0.97); }
+.btn--primary { background: var(--teal); color: #fff; border-color: var(--teal); }
+.btn--primary:hover { background: var(--teal-bright); border-color: var(--teal-bright); }
+.btn--danger { color: var(--danger); border-color: var(--danger); background: var(--danger-bg); }
+.btn--danger:hover { background: var(--danger); color: #fff; }
+.btn--sm { padding: 5px 10px; font-size: 12px; }
+
+/* ── Add Song Form ───────────────────────────────────────────────────────── */
+
+.form-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 20px; margin-bottom: 24px;
+}
+.form-card__title {
+  font-family: Georgia, serif; font-size: 16px; margin: 0 0 16px;
+}
+.form-row { display: flex; gap: 12px; margin-bottom: 12px; }
+.form-row:last-child { margin-bottom: 0; }
+.form-field { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.form-field label { font-size: 12px; color: var(--text-muted); }
+.form-field input {
+  padding: 8px 10px; border: 1.5px solid var(--border); border-radius: 6px;
+  background: var(--bg); color: var(--text); font-family: inherit; font-size: 14px;
+  outline: none; transition: border-color .15s;
+}
+.form-field input:focus { border-color: var(--gold); }
+
+/* ── Song List ───────────────────────────────────────────────────────────── */
+
+.list-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.list-header__title {
+  font-family: Georgia, serif; font-size: 16px; margin: 0;
+}
+.list-header__count { font-size: 12px; color: var(--text-muted); }
+
+.song-list { list-style: none; margin: 0; padding: 0; }
+.song-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 4px; border-bottom: 1px solid var(--border);
+  transition: background-color .12s;
+}
+.song-row:hover { background: var(--surface-hover); }
+.song-row--playing { background: rgba(63, 107, 95, 0.08); }
+.song-row--hidden { opacity: 0.55; }
+.song-row__rank {
+  font-family: Georgia, serif; font-size: 14px; color: var(--gold-dim);
+  width: 20px; flex-shrink: 0; text-align: right;
+}
+.song-row__cover {
+  flex-shrink: 0; width: 40px; height: 40px; border-radius: 6px; overflow: hidden;
+  background: var(--surface); border: 1px solid var(--border);
+}
+.song-row__cover img { width: 100%; height: 100%; object-fit: cover; }
+.song-row__body { flex: 1; min-width: 0; }
+.song-row__title {
+  font-family: Georgia, serif; font-size: 15px; margin: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.song-row__artist { margin: 2px 0 0; font-size: 12px; color: var(--text-muted); }
+.song-row__badge {
+  display: inline-block; margin-left: 6px; padding: 1px 6px;
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  background: var(--gold-dim); color: #fff; border-radius: 4px;
+  vertical-align: middle;
+}
+.song-row__votes { font-size: 12px; color: var(--text-muted); margin-right: 4px; }
+.song-row__actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+.empty { padding: 40px 4px; color: var(--text-muted); font-size: 14px; text-align: center; }
+
+/* ── Upload Zone ──────────────────────────────────────────────────────────── */
+
+.upload-zone {
+  border: 2px dashed var(--border); border-radius: 12px;
+  padding: 32px 20px; margin-bottom: 24px; text-align: center;
+  cursor: pointer; transition: all .15s;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.upload-zone:hover { border-color: var(--gold-dim); background: rgba(161,115,28,0.04); }
+.upload-zone--active { border-color: var(--gold); background: rgba(161,115,28,0.08); }
+.upload-zone--uploading { pointer-events: none; opacity: 0.7; }
+.upload-zone__icon { color: var(--text-muted); }
+.upload-zone--active .upload-zone__icon { color: var(--gold); }
+.upload-zone__text { margin: 0; font-size: 14px; color: var(--text-muted); }
+.upload-zone__hint { margin: 0; font-size: 11.5px; color: var(--text-muted); opacity: 0.7; }
+.upload-zone__success {
+  margin: 4px 0 0; font-size: 12px; color: var(--teal-bright);
+  font-weight: 500;
+}

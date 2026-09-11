@@ -1,0 +1,52 @@
+name: signal-jackbox
+services:
+  redis:
+    image: redis:7.4-alpine
+    container_name: signal_redis_cache
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass ${REDIS_PASSWORD} --appendonly yes
+    env_file:
+      - backend/.env
+    volumes:
+      - redis_data:/data
+
+  db:
+    image: postgres:17-alpine
+    container_name: signal_db
+    restart: always
+    env_file:
+      - backend/.env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build: ./frontend
+    container_name: signal_frontend
+    restart: always
+    ports:
+      - "3000:80"
+
+  dash:
+    build: ./dash-ui
+    container_name: signal_dash
+    restart: always
+    ports:
+      - "3001:80"
+
+volumes:
+  redis_data:
+    driver: local
+  postgres_data:
