@@ -40,33 +40,44 @@ func main() {
 		"GET": handlers.NowPlayingHandler,
 	}))
 
-	// Admin
+	// Admin auth
+	mux.HandleFunc("/api/admin/login", engine.MethodRouter(map[string]http.HandlerFunc{
+		"POST": handlers.AdminLoginHandler,
+	}))
+	mux.HandleFunc("/api/admin/logout", engine.MethodRouter(map[string]http.HandlerFunc{
+		"POST": handlers.AdminLogoutHandler,
+	}))
+	mux.HandleFunc("/api/admin/me", engine.MethodRouter(map[string]http.HandlerFunc{
+		"GET": handlers.AdminMeHandler,
+	}))
+
+	// Admin (requires a valid admin session)
 	mux.HandleFunc("/api/admin/songs", engine.MethodRouter(map[string]http.HandlerFunc{
-		"GET":  handlers.AdminListSongsHandler,
-		"POST": handlers.AdminAddSongHandler,
+		"GET":  handlers.RequireAdmin(handlers.AdminListSongsHandler),
+		"POST": handlers.RequireAdmin(handlers.AdminAddSongHandler),
 	}))
 	mux.HandleFunc("/api/admin/songs/", engine.MethodRouter(map[string]http.HandlerFunc{
-		"PUT":    handlers.AdminUpdateSongHandler,
-		"DELETE": handlers.AdminDeleteSongHandler,
-		"POST":   handlers.AdminToggleHiddenHandler,
+		"PUT":    handlers.RequireAdmin(handlers.AdminUpdateSongHandler),
+		"DELETE": handlers.RequireAdmin(handlers.AdminDeleteSongHandler),
+		"POST":   handlers.RequireAdmin(handlers.AdminToggleHiddenHandler),
 	}))
 	mux.HandleFunc("/api/admin/upload", engine.MethodRouter(map[string]http.HandlerFunc{
-		"POST": handlers.AdminUploadSongHandler,
+		"POST": handlers.RequireAdmin(handlers.AdminUploadSongHandler),
 	}))
 	mux.HandleFunc("/api/admin/play/", engine.MethodRouter(map[string]http.HandlerFunc{
-		"POST": handlers.AdminPlaySongHandler,
+		"POST": handlers.RequireAdmin(handlers.AdminPlaySongHandler),
 	}))
 	mux.HandleFunc("/api/admin/play", engine.MethodRouter(map[string]http.HandlerFunc{
-		"POST": handlers.AdminPlayTopHandler,
+		"POST": handlers.RequireAdmin(handlers.AdminPlayTopHandler),
 	}))
 	mux.HandleFunc("/api/admin/play-next", engine.MethodRouter(map[string]http.HandlerFunc{
-		"POST": handlers.AdminPlayNextHandler,
+		"POST": handlers.RequireAdmin(handlers.AdminPlayNextHandler),
 	}))
 	mux.HandleFunc("/api/admin/stop", engine.MethodRouter(map[string]http.HandlerFunc{
-		"POST": handlers.AdminStopHandler,
+		"POST": handlers.RequireAdmin(handlers.AdminStopHandler),
 	}))
 	mux.HandleFunc("/api/admin/autoplay", engine.MethodRouter(map[string]http.HandlerFunc{
-		"POST": handlers.AdminAutoPlayHandler,
+		"POST": handlers.RequireAdmin(handlers.AdminAutoPlayHandler),
 	}))
 
 	addr := ":8080"

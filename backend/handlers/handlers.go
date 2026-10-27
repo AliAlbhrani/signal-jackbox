@@ -114,8 +114,8 @@ func NowPlayingHandler(w http.ResponseWriter, r *http.Request) {
 	song, err := services.GetNowPlaying()
 	if err != nil || song == nil {
 		services.WriteJSON(w, 200, map[string]interface{}{
-			"song":      nil,
-			"autoplay":  services.IsAutoPlay(),
+			"song":     nil,
+			"autoplay": services.IsAutoPlay(),
 		})
 		return
 	}
@@ -168,7 +168,7 @@ func AdminAddSongHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	songs, _ := services.GetAllSongs()
+	songs, _ := services.GetAllSongsAdmin()
 	services.WriteJSON(w, 201, map[string]interface{}{
 		"songs": songs,
 		"total": len(songs),
@@ -221,7 +221,7 @@ func AdminDeleteSongHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	songs, _ := services.GetAllSongs()
+	songs, _ := services.GetAllSongsAdmin()
 	services.WriteJSON(w, 200, map[string]interface{}{
 		"songs":  songs,
 		"total":  len(songs),
@@ -415,7 +415,7 @@ func AdminUploadSongHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 	engine.Client.ZAdd(ctx, "songs:ranked", redis.Z{Score: 0, Member: songID})
 
-	songs, _ := services.GetAllSongs()
+	songs, _ := services.GetAllSongsAdmin()
 	services.WriteJSON(w, 201, map[string]interface{}{
 		"songs": songs,
 		"total": len(songs),
